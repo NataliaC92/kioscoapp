@@ -10,7 +10,7 @@ export default function Home({categorias}) {
 
   return (
      <Layout pagina={`Menú ${categoriaActual}`}>
-        <h1>Inicio</h1>
+        <h1 className='text-4xl font-black'>{categoriaActual}</h1>
      </Layout>
   );
 }
