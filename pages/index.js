@@ -9,8 +9,8 @@ export default function Home() {
 
 
   return (
-     <Layout pagina={categoriaActual.nombre}>
-        <h1 className='text-4xl font-black'>{categoriaActual.nombre}</h1>
+     <Layout pagina={`menu ${categoriaActual?.nombre}`}>
+        <h1 className='text-4xl font-black'>{categoriaActual?.nombre}</h1>
      </Layout>
   );
 }
