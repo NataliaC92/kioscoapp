@@ -2,7 +2,10 @@ import Head from 'next/head';
 import Sidebar from "../components/Sidebar";
 import ModalProducto from '../components/ModalProducto';
 import Modal, { setAppElement } from "react-modal";
+import { ToastContainer } from 'react-toastify';
 import useQuiosco from '../hooks/useQuiosco';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const customStyles = {
     content: {
@@ -20,7 +23,7 @@ Modal.setAppElement("#__next");
 
 export default function layout({children, pagina}) {
 
-    const { modal } = useQuiosco();
+    const { modal } = useQuiosco(); 
     
     return (
         <>
@@ -45,6 +48,9 @@ export default function layout({children, pagina}) {
                     <ModalProducto/>
                 </Modal>
             )}
+
+            <ToastContainer />
+
         </>
     );
   }
