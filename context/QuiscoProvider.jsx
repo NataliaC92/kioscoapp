@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { setHttpAgentOptions } from 'next/dist/server/config';
 
 const  QuioscoContext = createContext()
 
@@ -11,6 +12,7 @@ const QuioscoProvider = ({children}) => {
     const [producto, setProucto ] = useState({})
     const [ modal, setModal ] = useState(false)
     const [ pedido, setPedido ] = useState([])
+    const [ paso, setPado ] = useState(1)
 
     const obtenerCategorias = async () => {
         const { data } = await axios('/api/categorias')
@@ -51,6 +53,10 @@ const QuioscoProvider = ({children}) => {
 
         setModal(false)
     }
+
+    const handleChangePaso = paso => {
+        setPaso(paso);
+    }
     return (
         <QuioscoContext.Provider
             value={{
@@ -62,7 +68,9 @@ const QuioscoProvider = ({children}) => {
                 modal,
                 handleChangeModal,
                 handleAgregarPedido,
-                pedido
+                pedido,
+                paso,
+                handleChangePaso
             }}
         >
             {children}
