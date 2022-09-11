@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 
 const  QuioscoContext = createContext()
@@ -9,10 +10,11 @@ const QuioscoProvider = ({children}) => {
 
     const [categorias, setCategorias] = useState([])
     const [categoriaActual, setCategoriaActual] = useState({})
-    const [producto, setProucto ] = useState({})
+    const [producto, setProducto ] = useState({})
     const [ modal, setModal ] = useState(false)
     const [ pedido, setPedido ] = useState([])
-    const [ paso, setPaso ] = useState(1)
+
+    const router = useRouter()
 
     const obtenerCategorias = async () => {
         const { data } = await axios('/api/categorias')
@@ -29,17 +31,19 @@ const QuioscoProvider = ({children}) => {
     const handleclickCategoria = id => {
         const categoria = categorias.filter( cat=> cat.id === id )
         setCategoriaActual(categoria[0]);
+        router.push('/')
+
     }
 
     const handleSetProducto = producto => {
-        setProucto(producto)
+        setProducto(producto)
     }
 
     const handleChangeModal = () => {
         setModal(!modal)
     }
 
-    const handleAgregarPedido = ({categoriaId, imagen, ...producto}) => {
+    const handleAgregarPedido = ({categoriaId, ...producto}) => {
         if(pedido.some(productoState => productoState.id === producto.id)) {
             //Actualizar cantidad 
             const pedidoActualizado = pedido.map(productoState => productoState.id === producto.id ? producto : productoState)
@@ -54,9 +58,18 @@ const QuioscoProvider = ({children}) => {
         setModal(false)
     }
 
-    const handleChangePaso = paso => {
-        setPaso(paso);
+    const handleEditarCantidades = id => {
+        const productoActualizar = pedido.filter( producto => producto.id === id)
+        setProducto(productoActualizar[0])
+
+        setModal(!modal)
     }
+
+    const handleEliminarProducto = id => {
+        const pedidoActualizado = pedido.filter(producto => producto.id !== id)
+        setPedido(pedidoActualizado)
+    }
+
     return (
         <QuioscoContext.Provider
             value={{
@@ -69,8 +82,8 @@ const QuioscoProvider = ({children}) => {
                 handleChangeModal,
                 handleAgregarPedido,
                 pedido,
-                paso,
-                handleChangePaso
+                handleEditarCantidades,
+                handleEliminarProducto
             }}
         >
             {children}
